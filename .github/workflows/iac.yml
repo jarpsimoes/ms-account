@@ -15,4 +15,4 @@ jobs:
         run: ls
 
       - name: Plan
-        run: terraform plan
+        run: az account list
