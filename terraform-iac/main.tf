@@ -5,7 +5,7 @@ data "azurerm_subnet" "subnet" {
 }
 
 module "vm" {
-    source = "github.com/jarpsimoes/tf-modules/virtual-machine"
+    source = "github.com/jarpsimoes/tf-modules/virtual-machine-linux"
 
     name = "database-dev"
     resource_group_name = "operator-lab-rg"

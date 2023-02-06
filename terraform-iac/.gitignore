@@ -205,5 +205,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
+*.pub
+.terraform*
 # End of https://www.toptal.com/developers/gitignore/api/terraform,macos,windows,intellij+all,visualstudiocode,ansible

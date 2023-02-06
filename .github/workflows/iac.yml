@@ -14,5 +14,19 @@ jobs:
       - name: Run a one-line script
         run: ls
 
-      - name: Plan
-        run: az account list
+      - name: Set Azure Subscription
+        env:
+          AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION }}
+        run: az account set --subscription $AZURE_SUBSCRIPTION
+      
+      - name: Terraform init
+        working-directory: ./terraform-iac
+        run: terraform init
+      
+      - name: Apply Infra
+        working-directory: ./terraform-iac
+        env:
+          SSH_SHARED_PUB: ${{ secrets.SSH_SHARED_PUB }}
+        run: | 
+          echo $SSH_SHARED_PUB > key.pub
+          terraform apply -auto-approve
