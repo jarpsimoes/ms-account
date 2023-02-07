@@ -41,6 +41,7 @@ jobs:
         env:
           MYSQL_CONFIGS: ${{ secrets.MYSQL_CONFIGS }}
           SSH_SHARED_PRV: ${{ secrets.SSH_SHARED_PRV }}
+          ANSIBLE_HOST_KEY_CHECKING: False
         run: |
           echo $SSH_SHARED_PRV > key
           echo $MYSQL_CONFIGS | base64 -d > mysql-configs.yaml
