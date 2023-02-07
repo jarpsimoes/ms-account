@@ -44,6 +44,7 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
           echo $SSH_SHARED_PRV > key
+          chmod 0600 key
           echo $MYSQL_CONFIGS | base64 -d > mysql-configs.yaml
           /home/admin_vm/.local/bin/ansible-galaxy install geerlingguy.mysql
           /home/admin_vm/.local/bin/ansible-playbook -i hosts.ini mysql.yaml
