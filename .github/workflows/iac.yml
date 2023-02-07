@@ -6,7 +6,7 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  build:
+  Infrastructure:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
@@ -30,3 +30,20 @@ jobs:
         run: | 
           echo $SSH_SHARED_PUB > key.pub
           terraform apply -auto-approve
+     
+  Configuration:
+    runs-on: self-hosted
+    needs: Infrastructure
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run MySQL Install
+        working-directory: ./ansible-casc
+        env:
+          MYSQL_CONFIGS: ${{ secrets.MYSQL_CONFIGS }}
+          SSH_SHARED_PRV: ${{ secrets.SSH_SHARED_PRV }}
+        run: |
+          echo $SSH_SHARED_PRV > key
+          echo $MYSQL_CONFIGS > mysql-configs.yml
+          ansible-galaxy collection install geerlinguy.mysql
+
+
