@@ -44,6 +44,5 @@ jobs:
         run: |
           echo $SSH_SHARED_PRV > key
           echo $MYSQL_CONFIGS > mysql-configs.yml
-          ansible-galaxy collection install geerlinguy.mysql
-
-
+          /home/admin_vm/.local/bin/ansible-galaxy collection install geerlinguy.mysql
+          ls -l
