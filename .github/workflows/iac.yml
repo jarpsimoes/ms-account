@@ -43,7 +43,7 @@ jobs:
           SSH_SHARED_PRV: ${{ secrets.SSH_SHARED_PRV }}
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
-          echo $SSH_SHARED_PRV > key
+          echo $SSH_SHARED_PRV | base64 -d > key
           chmod 0600 key
           echo $MYSQL_CONFIGS | base64 -d > mysql-configs.yaml
           /home/admin_vm/.local/bin/ansible-galaxy install geerlingguy.mysql
