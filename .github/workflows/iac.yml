@@ -43,6 +43,6 @@ jobs:
           SSH_SHARED_PRV: ${{ secrets.SSH_SHARED_PRV }}
         run: |
           echo $SSH_SHARED_PRV > key
-          echo $MYSQL_CONFIGS > mysql-configs.yml
+          echo $MYSQL_CONFIGS > mysql-configs.yaml
           /home/admin_vm/.local/bin/ansible-galaxy install geerlingguy.mysql
           /home/admin_vm/.local/bin/ansible-playbook -i hosts.ini mysql.yaml
