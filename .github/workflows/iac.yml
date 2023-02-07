@@ -45,4 +45,4 @@ jobs:
           echo $SSH_SHARED_PRV > key
           echo $MYSQL_CONFIGS > mysql-configs.yml
           /home/admin_vm/.local/bin/ansible-galaxy install geerlingguy.mysql
-          /home/admin_vm/.local/bin/ansible-playbook -i hosts.ini mysql.yml
+          /home/admin_vm/.local/bin/ansible-playbook -i hosts.ini mysql.yaml
