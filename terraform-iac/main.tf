@@ -39,8 +39,8 @@ resource "azurerm_container_group" "container_app" {
       module.vm
     ]
     name = "account-ms"
-    location = module.vm.location
-    resource_group_name = module.vm.resource_group_name
+    location = "West Europe"
+    resource_group_name = "operator-lab-rg"
     ip_address_type = "Public"
     os_type = "Linux"
     dns_name_label = "account-ms"
