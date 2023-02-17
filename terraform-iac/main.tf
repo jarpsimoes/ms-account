@@ -34,3 +34,28 @@ module "vm" {
         pub_key_path = "./key.pub"
     }
 }
+resource "azurerm_container_group" "container_app" {
+
+    name = "account-ms"
+    location = module.vm.location
+    resource_group_name = module.vm.resource_group_name
+    ip_address_type = "Public"
+    os_type = "Linux"
+    dns_name_label = "account-ms"
+
+    container {
+      name = "account-ms"
+      image = "mcr.microsoft.com/azure-sql-edge:latest"
+      cpu = "0.5"
+      memory = "1"
+
+      ports {
+        port = 443
+        protocol = "TCP"
+      }
+
+      tags = {
+        environment = "test"
+      }
+    }
+}
