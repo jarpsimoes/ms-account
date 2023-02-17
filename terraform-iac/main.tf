@@ -35,7 +35,9 @@ module "vm" {
     }
 }
 resource "azurerm_container_group" "container_app" {
-
+    depends_on = [
+      module.vm
+    ]
     name = "account-ms"
     location = module.vm.location
     resource_group_name = module.vm.resource_group_name
