@@ -53,9 +53,9 @@ resource "azurerm_container_group" "container_app" {
         port = 443
         protocol = "TCP"
       }
+    }
 
-      tags = {
+    tags = {
         environment = "test"
-      }
     }
 }
