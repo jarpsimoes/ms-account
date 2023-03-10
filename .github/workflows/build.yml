@@ -27,13 +27,15 @@ jobs:
                 cache: maven
 
             - name: Run Unit Tests
-              run: ./pt.jarpsimoes.tutorial.ms.account/mvnw test
+              working-directory: ./pt.jarpsimoes.tutorial.ms.account
+              run: ./mvnw test
 
             - name: Codacy Coverage Reporter
+              working-directory: ./pt.jarpsimoes.tutorial.ms.account
               uses: codacy/codacy-coverage-reporter-action@v1.3.0
               with:
                 project-token: ${{ secrets.CODACY_API_TOKEN }}
-                coverage-reports: ./pt.jarpsimoes.tutorial.ms.account/target/jacoco-report/jacoco.xml
+                coverage-reports: ./target/jacoco-report/jacoco.xml
 
     BuildAndPublish:
         runs-on: ubuntu-latest
@@ -57,4 +59,5 @@ jobs:
                 password: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
 
             - name: Build and Publish Docker Image
-              run: ./pt.jarpsimoes.tutorial.ms.account/mvnw install -Dquarkus.container-image.build=true
+              working-directory: ./pt.jarpsimoes.tutorial.ms.account
+              run: ./mvnw install -Dquarkus.container-image.build=true
