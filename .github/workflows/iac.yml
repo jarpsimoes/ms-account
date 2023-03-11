@@ -1,9 +1,13 @@
 name: IaC Checks
-#on:
-#  push:
-#    branches: [ "develop" ]
-#  pull_request:
-#    branches: [ "develop" ]
+
+on:
+  workflow_run:
+    workflows:
+      - "Test, Build and Publish"
+    branches:
+      - develop
+    types:
+      - completed
 
 jobs:
   Infrastructure:
