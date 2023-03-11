@@ -59,4 +59,4 @@ jobs:
 
             - name: Build and Publish Docker Image
               working-directory: ./pt.jarpsimoes.tutorial.ms.account
-              run: ./mvnw install -Dquarkus.container-image.build=true
+              run: ./mvnw install -Dquarkus.container-image.build=true -Dquarkus.container-image.push=true
