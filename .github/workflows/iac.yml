@@ -2,10 +2,8 @@ name: IaC Checks
 
 on:
   workflow_run:
-    workflows:
-      - "Test, Build and Publish"
-    branches:
-      - develop
+    workflows: ["Coverage and Publish"]
+    branches: [develop]
     types:
       - completed
 
