@@ -1,13 +1,13 @@
 name: "Coverage and Publish"
 
 on:
-	push:
-		branches: ["develop"]
-		paths: ["pt.jarpsimoes.tutorial.ms.account/**"]
-		paths-ignore: ["*.md"]
+  push:
+    branches: ["develop"]
+    paths: ["pt.jarpsimoes.tutorial.ms.account/**"]
+    paths-ignore: ["*.md"]
 
 jobs:
-	test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
