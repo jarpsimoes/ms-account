@@ -15,7 +15,7 @@ on:
     - ".github/workflows/build.yml"
 
 jobs:
-  test:
+  TestAndCoverage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -37,41 +37,41 @@ jobs:
         with:
           project-token: ${{ secrets.CODACY_API_TOKEN }}
           coverage-reports: ./pt.jarpsimoes.tutorial.ms.account/target/jacoco-report/jacoco.xml
+  
+  BuildAndPublish:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.1.0
 
-    BuildAndPublish:
-      runs-on: ubuntu-latest
-      needs: test
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v3.1.0
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'adopt-openj9'
+          java-version: '17'
+          cache: maven
 
-        - name: Setup Java JDK
-          uses: actions/setup-java@v3.10.0
-          with:
-            distribution: 'adopt-openj9'
-            java-version: '17'
-            cache: maven
+      - name: Docker Login
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.DOCKER_REGISTRY_GITHUB_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
 
-        - name: Docker Login
-          uses: docker/login-action@v2.1.0
-          with:
-            registry: ghcr.io
-            username: ${{ secrets.DOCKER_REGISTRY_GITHUB_USERNAME }}
-            password: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
+      - name: Extract branch name
+        shell: bash
+        run: |
+          echo "branch=${GITHUB_REF#refs/heads/}"
+          echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")"
 
-        - name: Extract branch name
-          shell: bash
-          run: |
-            echo "branch=${GITHUB_REF#refs/heads/}"
-            echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")"
+        id: extract_branch
 
-          id: extract_branch
-
-        - name: Build and Publish Docker Image
-          working-directory: ./pt.jarpsimoes.tutorial.ms.account
-          run: |
-            ./mvnw install -Dquarkus.container-image.build=true \
-            -Dquarkus.container-image.push=true \
-            -Dquarkus.container-image.additional-tags=\
-            ${{ steps.extract_branch.outputs.branch }}.\
-            ${{ steps.extract_branch.outputs.git_hash }}
+      - name: Build and Publish Docker Image
+        working-directory: ./pt.jarpsimoes.tutorial.ms.account
+        run: |
+          ./mvnw install -Dquarkus.container-image.build=true \
+          -Dquarkus.container-image.push=true \
+          -Dquarkus.container-image.additional-tags=\
+          ${{ steps.extract_branch.outputs.branch }}.\
+          ${{ steps.extract_branch.outputs.git_hash }}
