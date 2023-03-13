@@ -3,12 +3,12 @@ name: "IaC Checks"
 on:
   push:
 		branches:
-		- "develop"
+			- "develop"
 		paths:
-		- "terraform-iac/**"
-		- "ansible-casc/**"
+			- "terraform-iac/**"
+			- "ansible-casc/**"
 		paths-ignore:
-		- "*.md"
+			- "*.md"
 
 jobs:
   Infrastructure:
