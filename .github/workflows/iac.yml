@@ -2,9 +2,9 @@ name: "IaC Checks"
 
 on:
   workflow_run:
-    workflows: [Coverage and Publish]
+    workflows: ["Coverage and Publish"]
+    branches: [develop]
     types: [on-success]
-
 
 jobs:
   Infrastructure:
