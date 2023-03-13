@@ -1,70 +1,70 @@
 name: "Coverage and Publish"
 
 on:
-  push:
-    branches:
+	push:
+	  pull_request:
+      branches:
       - "develop"
-      - "main"
-    tags:
-      - "v*"
-    paths-ignore:
-      - "*.md"
-  pull_request:
-    branches: [ "main" ]
+	  branches:
+    - "develop"
+	  paths:
+    - "pt.jarpsimoes.tutorial.ms.account/**"
+	  paths-ignore:
+    - "*.md"
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3.1.0
+	test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.1.0
 
-            - name: Setup Java JDK
-              uses: actions/setup-java@v3.10.0
-              with:
-                distribution: 'adopt-openj9'
-                java-version: '17'
-                cache: maven
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'adopt-openj9'
+          java-version: '17'
+          cache: maven
 
-            - name: Run Unit Tests
-              working-directory: ./pt.jarpsimoes.tutorial.ms.account
-              run: ./mvnw test
+      - name: Run Unit Tests
+        working-directory: ./pt.jarpsimoes.tutorial.ms.account
+        run: ./mvnw test
 
-            - name: Codacy Coverage Reporter
-              uses: codacy/codacy-coverage-reporter-action@v1.3.0
-              with:
-                project-token: ${{ secrets.CODACY_API_TOKEN }}
-                coverage-reports: ./pt.jarpsimoes.tutorial.ms.account/target/jacoco-report/jacoco.xml
+      - name: Codacy Coverage Reporter
+        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+        with:
+          project-token: ${{ secrets.CODACY_API_TOKEN }}
+          coverage-reports: ./pt.jarpsimoes.tutorial.ms.account/target/jacoco-report/jacoco.xml
 
     BuildAndPublish:
-        runs-on: ubuntu-latest
-        needs: test
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3.1.0
+      runs-on: ubuntu-latest
+      needs: test
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3.1.0
 
-            - name: Setup Java JDK
-              uses: actions/setup-java@v3.10.0
-              with:
-                distribution: 'adopt-openj9'
-                java-version: '17'
-                cache: maven
+        - name: Setup Java JDK
+          uses: actions/setup-java@v3.10.0
+          with:
+            distribution: 'adopt-openj9'
+            java-version: '17'
+            cache: maven
 
-            - name: Docker Login
-              uses: docker/login-action@v2.1.0
-              with:
-                registry: ghcr.io
-                username: ${{ secrets.DOCKER_REGISTRY_GITHUB_USERNAME }}
-                password: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
+        - name: Docker Login
+          uses: docker/login-action@v2.1.0
+          with:
+            registry: ghcr.io
+            username: ${{ secrets.DOCKER_REGISTRY_GITHUB_USERNAME }}
+            password: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
 
-            - name: Extract branch name
-              shell: bash
-              run: echo "branch=${GITHUB_REF#refs/heads/}"
-              id: extract_branch
+        - name: Extract branch name
+          shell: bash
+          run: echo "branch=${GITHUB_REF#refs/heads/}"
+          id: extract_branch
 
-            - name: Build and Publish Docker Image
-              working-directory: ./pt.jarpsimoes.tutorial.ms.account
-              run: |
-                ./mvnw install -Dquarkus.container-image.build=true \
-                        -Dquarkus.container-image.push=true \
-                        -Dquarkus.container-image.additional-tags=${{ steps.extract_branch.outputs.branch }}
+        - name: Build and Publish Docker Image
+          working-directory: ./pt.jarpsimoes.tutorial.ms.account
+          run: |
+            ./mvnw install -Dquarkus.container-image.build=true \
+            -Dquarkus.container-image.push=true \
+            -Dquarkus.container-image.additional-tags=${{ steps.extract_branch.outputs.branch }}

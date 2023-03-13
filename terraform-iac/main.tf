@@ -34,38 +34,3 @@ module "vm" {
         pub_key_path = "./key.pub"
     }
 }
-resource "azurerm_container_group" "container_app" {
-    depends_on = [
-      module.vm
-    ]
-    name = "account-ms"
-    location = "West Europe"
-    resource_group_name = "operator-lab-rg"
-    ip_address_type = "Public"
-    os_type = "Linux"
-    dns_name_label = "account-ms"
-
-    container {
-        name = "account-ms"
-        image = "ghcr.io/jarpsimoes/ms-account:develop"
-        cpu = "0.5"
-        memory = "1"
-
-        ports {
-            port = 8080
-            protocol = "TCP"
-        }
-
-        environment_variables = {
-            QUARKUS_DATASOURCE_URL = "jdbc:mysql://10.4.0.100:3306/account?useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
-            QUARKUS_DATASOURCE_USERNAME = "ms_account"
-            QUARKUS_DATASOURCE_PASSWORD = "ms_account"
-            QUARKUS_DATASOURCE_DB_KIND = "mysql"
-            QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION = "update"
-        }
-    }
-
-    tags = {
-        environment = "test"
-    }
-}

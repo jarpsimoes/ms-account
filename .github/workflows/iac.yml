@@ -1,11 +1,14 @@
 name: "IaC Checks"
 
 on:
-  workflow_run:
-    workflows: ["Coverage and Publish"]
-    branches: [develop]
-    types:
-      - completed
+  push:
+		branches:
+		- "develop"
+		paths:
+		- "terraform-iac/**"
+		- "ansible-casc/**"
+		paths-ignore:
+		- "*.md"
 
 jobs:
   Infrastructure:
