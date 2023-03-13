@@ -5,11 +5,11 @@ on:
     branches: ["develop"]
     paths: ["pt.jarpsimoes.tutorial.ms.account/**"]
     paths-ignore: ["*.md"]
-	
+
 	push:
-	  branches: ["develop"]
-	  paths: ["pt.jarpsimoes.tutorial.ms.account/**"]
-	  paths-ignore:["*.md"]
+		branches: ["develop"]
+		paths: ["pt.jarpsimoes.tutorial.ms.account/**"]
+		paths-ignore:["*.md"]
 
 jobs:
 	test:
