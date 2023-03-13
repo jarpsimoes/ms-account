@@ -67,4 +67,4 @@ jobs:
           TAG=dev_$(git rev-parse --short "$GITHUB_SHA")
           ./mvnw install -DskipTests -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.push=true \
-          -Dquarkus.container-image.image=ghcr.io/jarpsimoes/ms-account:$TAG
+          -Dquarkus.container-image.tag=$TAG
