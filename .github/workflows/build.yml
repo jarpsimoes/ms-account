@@ -69,7 +69,9 @@ jobs:
 
       - name: Build and Publish Docker Image
         working-directory: ./pt.jarpsimoes.tutorial.ms.account
+        env:
+          TAG: ${{ steps.extract_branch.outputs }
         run: |
           ./mvnw install -DskipTests -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.push=true \
-          -Dquarkus.container-image.image=ghcr.io/jarpsimoes/ms-account:${{ steps.extract_branch.outputs.git_hash }}
+          -Dquarkus.container-image.image=ghcr.io/jarpsimoes/ms-account:$TAG
