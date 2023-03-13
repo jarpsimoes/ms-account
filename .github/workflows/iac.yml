@@ -1,4 +1,4 @@
-name: IaC Checks
+name: "IaC Checks"
 
 on:
   workflow_run:
