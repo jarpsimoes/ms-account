@@ -70,8 +70,8 @@ jobs:
       - name: Build and Publish Docker Image
         working-directory: ./pt.jarpsimoes.tutorial.ms.account
         run: |
-          ./mvnw install -Dquarkus.container-image.build=true \
+          ./mvnw install -DskipTests -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.push=true \
           -Dquarkus.container-image.additional-tags=\
-          ${{ steps.extract_branch.outputs.branch }}-\
+          ${{ steps.extract_branch.outputs.branch }}\
           ${{ steps.extract_branch.outputs.git_hash }}
