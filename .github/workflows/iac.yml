@@ -1,21 +1,14 @@
 name: "IaC Checks"
 
 on:
-  pull_request:
-    branches: 
-    - "develop"
-    paths:
-    - "terraform-iac/**"
-    - "ansible-casc/**"
-    - ".github/workflows/iac.yml"
-
-  push:
+  workflow_run:
+    workflows:
+    - "Coverage and Publish"
     branches:
-    - "develop"
-    paths:
-    - "terraform-iac/**"
-    - "ansible-casc/**"
-    - ".github/workflows/iac.yml"
+    - develop
+    types:
+      - completed
+
 
 jobs:
   Infrastructure:
