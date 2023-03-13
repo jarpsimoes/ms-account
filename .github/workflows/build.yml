@@ -73,5 +73,5 @@ jobs:
           ./mvnw install -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.push=true \
           -Dquarkus.container-image.additional-tags=\
-          ${{ steps.extract_branch.outputs.branch }}.\
+          ${{ steps.extract_branch.outputs.branch }}-\
           ${{ steps.extract_branch.outputs.git_hash }}
