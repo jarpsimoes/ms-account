@@ -72,6 +72,4 @@ jobs:
         run: |
           ./mvnw install -DskipTests -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.push=true \
-          -Dquarkus.container-image.tag=\
-          ${{ steps.extract_branch.outputs.branch }}\
-          ${{ steps.extract_branch.outputs.git_hash }}
+          -Dquarkus.container-image.tag=${{ steps.extract_branch.outputs.git_hash }}
