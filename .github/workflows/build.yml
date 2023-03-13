@@ -62,7 +62,6 @@ jobs:
       - name: Extract branch name
         shell: bash
         run: |
-          echo "branch=${GITHUB_REF#refs/heads/}"
           echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")"
 
         id: extract_branch
@@ -74,4 +73,4 @@ jobs:
         run: |
           ./mvnw install -DskipTests -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.push=true \
-          -Dquarkus.container-image.image=ghcr.io/jarpsimoes/ms-account:$TAG
+          -Dquarkus.container-image.image=ghcr.io/jarpsimoes/ms-account:$(git rev-parse --short "$GITHUB_SHA")
