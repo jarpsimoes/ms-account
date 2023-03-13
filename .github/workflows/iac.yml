@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Coverage and Publish"]
     branches: [develop]
-    types: [on-success]
+    types: [completed]
 
 jobs:
   Infrastructure:
