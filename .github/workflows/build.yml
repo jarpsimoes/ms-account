@@ -1,15 +1,10 @@
 name: "Coverage and Publish"
 
 on:
-  pull_request:
-    branches: ["develop"]
-    paths: ["pt.jarpsimoes.tutorial.ms.account/**"]
-    paths-ignore: ["*.md"]
-
 	push:
 		branches: ["develop"]
 		paths: ["pt.jarpsimoes.tutorial.ms.account/**"]
-		paths-ignore:["*.md"]
+		paths-ignore: ["*.md"]
 
 jobs:
 	test:
