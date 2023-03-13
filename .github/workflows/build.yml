@@ -59,18 +59,12 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_GITHUB_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
 
-      - name: Extract branch name
-        shell: bash
-        run: |
-          echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")"
-
-        id: extract_branch
-
       - name: Build and Publish Docker Image
         working-directory: ./pt.jarpsimoes.tutorial.ms.account
         env:
           TAG: ${{ steps.extract_branch.outputs.git_hash }}
         run: |
+          TAG=dev_$(git rev-parse --short "$GITHUB_SHA")
           ./mvnw install -DskipTests -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.push=true \
-          -Dquarkus.container-image.image=ghcr.io/jarpsimoes/ms-account:$(git rev-parse --short "$GITHUB_SHA")
+          -Dquarkus.container-image.image=ghcr.io/jarpsimoes/ms-account:$TAG
