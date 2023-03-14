@@ -21,5 +21,10 @@ resource "azurerm_container_group" "ms_account" {
     image  = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
     memory = "1.5"
     name   = "ms-account"
+
+    ports {
+      port     = 8080
+      protocol = "TCP"
+    }
   }
 }
