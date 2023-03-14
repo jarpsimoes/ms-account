@@ -7,12 +7,20 @@ on:
     paths:
     - "pt.jarpsimoes.tutorial.ms.account/**"
     - ".github/workflows/build.yml"
+    - "terraform-iac/**"
+    - "terraform-deployment/**"
+    - "ansible-casc/**"
+    - ".github/workflows/iac.yml"
   pull_request:
     branches:
     - "main"
     paths:
     - "pt.jarpsimoes.tutorial.ms.account/**"
     - ".github/workflows/build.yml"
+    - "terraform-iac/**"
+    - "terraform-deployment/**"
+    - "ansible-casc/**"
+    - ".github/workflows/iac.yml"
 
 jobs:
   TestAndCoverage:

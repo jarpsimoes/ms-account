@@ -1,4 +1,4 @@
-name: "IaC Checks"
+name: "IaC Checks and Deployment"
 
 on:
   workflow_run:
@@ -46,3 +46,17 @@ jobs:
           echo $MYSQL_CONFIGS | base64 -d > mysql-configs.yaml
           /home/admin_vm/.local/bin/ansible-galaxy install geerlingguy.mysql
           /home/admin_vm/.local/bin/ansible-playbook -i hosts.ini mysql.yaml
+
+  Deployment:
+    runs-on: self-hosted
+    needs: Configuration
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Docker Build
+        working-directory: ./terraform-deployment
+        env:
+          DOCKER_REGISTRY_GITHUB_TOKEN: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
+        run: |
+          terraform init
+          TAG=dev_$(git rev-parse --short "$GITHUB_SHA")
+          terraform apply -var="tag=$TAG" -auto-approve
