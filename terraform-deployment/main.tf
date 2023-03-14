@@ -15,7 +15,9 @@ resource "azurerm_container_group" "ms_account" {
   ip_address_type     = "Public"
   dns_name_label      = "ms-account-dev"
 
-
+  image_registry_credential {
+    server   = "ghcr.io"
+  }
   container {
     cpu    = "0.2"
     image  = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
