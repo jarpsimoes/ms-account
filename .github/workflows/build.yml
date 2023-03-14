@@ -3,13 +3,13 @@ name: "Coverage and Publish"
 on:
   push:
     branches:
-    - "develop"
+    - "main"
     paths:
     - "pt.jarpsimoes.tutorial.ms.account/**"
     - ".github/workflows/build.yml"
   pull_request:
     branches:
-    - "develop"
+    - "main"
     paths:
     - "pt.jarpsimoes.tutorial.ms.account/**"
     - ".github/workflows/build.yml"
