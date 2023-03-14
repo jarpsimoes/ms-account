@@ -17,8 +17,8 @@ resource "azurerm_container_group" "ms_account" {
 
   container {
     cpu    = "0.5"
-    #image  = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
-    image = "ghcr.io/jarpsimoes/ms-account:dev_05fd3dd"
+    image  = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
+    #image = "ghcr.io/jarpsimoes/ms-account:dev_05fd3dd"
     memory = "1"
     name   = "ms-account"
 
