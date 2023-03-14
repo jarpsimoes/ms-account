@@ -13,13 +13,12 @@ resource "azurerm_container_group" "ms_account" {
   resource_group_name = "operator-lab-rg"
   restart_policy      = "Always"
   ip_address_type     = "Private"
-
-  dns_name_label      = "ms-account-dev"
   subnet_ids          = [data.azurerm_subnet.subnet.id]
 
   container {
     cpu    = "0.5"
-    image  = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
+    #image  = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
+    image = "ghcr.io/jarpsimoes/ms-account:dev_05fd3dd"
     memory = "1"
     name   = "ms-account"
 
@@ -29,9 +28,10 @@ resource "azurerm_container_group" "ms_account" {
     }
 
     environment_variables = {
-      "QUARKUS_DATASOURCE_URL" = "jdbc:mysql//10.4.0.100:3306/ms_account?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
+      "QUARKUS_DATASOURCE_URL" = "jdbc:mysql://10.4.0.100:3306/ms_account_dev?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
       "QUARKUS_DATASOURCE_USERNAME" = "ms_account"
       "QUARKUS_DATASOURCE_PASSWORD" = "ms_account"
+      "QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION" = "update"
     }
   }
 }
