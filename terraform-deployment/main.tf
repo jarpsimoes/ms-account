@@ -14,7 +14,7 @@ resource "azurerm_container_group" "ms_account" {
   restart_policy      = "Always"
   ip_address_type     = "Public"
   dns_name_label      = "ms-account-dev"
-  subnet_ids          = [data.azurerm_subnet.subnet.id]
+
 
   container {
     cpu    = "0.2"
