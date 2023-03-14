@@ -1,6 +1,6 @@
 data "azurerm_subnet" "subnet" {
-  name = "operator-net-shr-linux-subnet"
-  virtual_network_name = "operator-net-shr-vnet"
+  name = "operator-net-dev-k8s-subnet"
+  virtual_network_name = "operator-net-dev-vnet"
   resource_group_name = "operator-lab-rg"
 }
 variable "tag" {
@@ -12,21 +12,26 @@ resource "azurerm_container_group" "ms_account" {
   os_type             = "Linux"
   resource_group_name = "operator-lab-rg"
   restart_policy      = "Always"
-  ip_address_type     = "Public"
-  dns_name_label      = "ms-account-dev"
+  ip_address_type     = "Private"
 
-  image_registry_credential {
-    server   = "ghcr.io"
-  }
+  dns_name_label      = "ms-account-dev"
+  subnet_ids          = [data.azurerm_subnet.subnet.id]
+
   container {
-    cpu    = "0.2"
+    cpu    = "0.5"
     image  = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
-    memory = "1.5"
+    memory = "1"
     name   = "ms-account"
 
     ports {
       port     = 8080
       protocol = "TCP"
+    }
+
+    environment_variables = {
+      "QUARKUS_DATASOURCE_URL" = "jdbc:mysql//10.4.0.100:3306/ms_account?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
+      "QUARKUS_DATASOURCE_USERNAME" = "ms_account"
+      "QUARKUS_DATASOURCE_PASSWORD" = "ms_account"
     }
   }
 }
