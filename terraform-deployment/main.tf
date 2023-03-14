@@ -12,7 +12,7 @@ resource "azurerm_container_group" "ms_account" {
   os_type             = "Linux"
   resource_group_name = "operator-lab-rg"
   restart_policy      = "Always"
-  ip_address_type     = "public"
+  ip_address_type     = "Public"
   dns_name_label      = "ms-account-dev"
   subnet_ids          = [data.azurerm_subnet.subnet.id]
 
