@@ -34,3 +34,24 @@ module "vm" {
         pub_key_path = "./key.pub"
     }
 }
+
+data "azurerm_subnet" "subnet_dev" {
+    name = "operator-net-dev-k8s-subnet"
+    virtual_network_name = "operator-net-dev-vnet"
+    resource_group_name = "operator-lab-rg"
+}
+
+resource "azurerm_log_analytics_workspace" "log_workspace" {
+    name                = "container-apps-log-workspace"
+    resource_group_name = "operator-lab-rg"
+    location            = "West Europe"
+    sku                 = "PerGB2018"
+    retention_in_days   = 10
+}
+
+resource "azurerm_container_app_environment" "example" {
+    name                       = "container-enviroment"
+    location                   = "West Europe"
+    resource_group_name        = "operator-lab-rg"
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
+}
