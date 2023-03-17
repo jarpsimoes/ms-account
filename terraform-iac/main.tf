@@ -49,7 +49,7 @@ resource "azurerm_log_analytics_workspace" "log_workspace" {
     retention_in_days   = 30
 }
 
-resource "azurerm_container_app_environment" "example" {
+resource "azurerm_container_app_environment" "app_env" {
     name                       = "container-enviroment"
     location                   = "West Europe"
     resource_group_name        = "operator-lab-rg"
