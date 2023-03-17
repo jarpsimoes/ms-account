@@ -46,7 +46,7 @@ resource "azurerm_log_analytics_workspace" "log_workspace" {
     resource_group_name = "operator-lab-rg"
     location            = "West Europe"
     sku                 = "PerGB2018"
-    retention_in_days   = 10
+    retention_in_days   = 30
 }
 
 resource "azurerm_container_app_environment" "example" {
