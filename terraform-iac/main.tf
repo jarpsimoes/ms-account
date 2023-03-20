@@ -1,4 +1,10 @@
-data "azurerm_subnet" "subnet" {
+data "azurerm_subnet" "subnet_shr" {
+    name = "operator-net-shr-linux-subnet"
+    virtual_network_name = "operator-net-shr-vnet"
+    resource_group_name = "operator-lab-rg"
+}
+
+data "azurerm_subnet" "subnet_dev" {
     name = "operator-net-shr-linux-subnet"
     virtual_network_name = "operator-net-shr-vnet"
     resource_group_name = "operator-lab-rg"
@@ -19,7 +25,7 @@ module "vm" {
         internal_address_allocation = "Dynamic"
         private_ip_address = "10.4.0.100"
         public_ip = false
-        subnet_id = data.azurerm_subnet.subnet.id
+        subnet_id = data.azurerm_subnet.subnet_shr.id
     }
 
     image = {
@@ -35,11 +41,6 @@ module "vm" {
     }
 }
 
-data "azurerm_subnet" "subnet_dev" {
-    name = "operator-net-dev-k8s-subnet"
-    virtual_network_name = "operator-net-dev-vnet"
-    resource_group_name = "operator-lab-rg"
-}
 
 resource "azurerm_log_analytics_workspace" "log_workspace" {
     name                = "container-apps-log-workspace"
@@ -50,8 +51,15 @@ resource "azurerm_log_analytics_workspace" "log_workspace" {
 }
 
 resource "azurerm_container_app_environment" "app_env" {
+    depends_on = [
+        azurerm_log_analytics_workspace.log_workspace
+    ]
     name                       = "container-enviroment"
     location                   = "West Europe"
     resource_group_name        = "operator-lab-rg"
     log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
+
+    infrastructure_subnet_id = data.azurerm_subnet.subnet_dev.id
+
+    internal_load_balancer = true
 }
