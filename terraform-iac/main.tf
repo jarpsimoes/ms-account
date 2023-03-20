@@ -61,5 +61,5 @@ resource "azurerm_container_app_environment" "app_env" {
 
     infrastructure_subnet_id = data.azurerm_subnet.subnet_dev.id
 
-    internal_load_balancer = true
+    internal_load_balancer_enabled = true
 }
