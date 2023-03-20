@@ -5,8 +5,8 @@ data "azurerm_subnet" "subnet_shr" {
 }
 
 data "azurerm_subnet" "subnet_dev" {
-    name = "operator-net-shr-linux-subnet"
-    virtual_network_name = "operator-net-shr-vnet"
+    name = "operator-net-dev-k8s-subnet"
+    virtual_network_name = "operator-net-dev-vnet"
     resource_group_name = "operator-lab-rg"
 }
 
