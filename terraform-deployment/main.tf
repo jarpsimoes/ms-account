@@ -31,19 +31,19 @@ resource "azurerm_container_app" "container_app" {
       liveness_probe {
         port = 8080
         path = "/health/live"
-        initial_delay_seconds = 10
+        initial_delay = 10
         transport = "HTTP"
       }
       startup_probe {
         port = 8080
         path = "/health/ready"
-        initial_delay_seconds = 10
+        initial_delay = 10
         transport = "HTTP"
       }
       readiness_probe {
         port = 8080
         path = "/health/ready"
-        initial_delay_seconds = 10
+        initial_delay = 10
         transport = "HTTP"
       }
 
