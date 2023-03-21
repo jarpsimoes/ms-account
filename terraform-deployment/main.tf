@@ -28,6 +28,25 @@ resource "azurerm_container_app" "container_app" {
       cpu    = "0.5"
       memory = "1Gi"
 
+      liveness_probe {
+        port = 8080
+        path = "/health/live"
+        initial_delay_seconds = 10
+        transport = "HTTP"
+      }
+      startup_probe {
+        port = 8080
+        path = "/health/ready"
+        initial_delay_seconds = 10
+        transport = "HTTP"
+      }
+      readiness_probe {
+        port = 8080
+        path = "/health/ready"
+        initial_delay_seconds = 10
+        transport = "HTTP"
+      }
+
       env {
         name  = "QUARKUS_DATASOURCE_JDBC_URL"
         value = "jdbc:mysql://10.4.0.100:3306/ms_account_dev"
