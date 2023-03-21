@@ -2,7 +2,9 @@ data "azurerm_container_app_environment" "app_env" {
   name                = "container-enviroment"
   resource_group_name = "operator-lab-rg"
 }
-
+variable "tag" {
+  value = string
+}
 resource "azurerm_container_app" "container_app" {
   name                          = "container-app"
   container_app_environment_id  = data.azurerm_container_app_environment.app_env.id
@@ -15,12 +17,12 @@ resource "azurerm_container_app" "container_app" {
 
     container {
       name = "ms-account"
-      image = "ghcr.io/jarpsimoes/ms-account:latest"
+      image = "ghcr.io/jarpsimoes/ms-account:${var.tag}"
       cpu    = "0.5"
       memory = "1Gi"
 
       env {
-        name  = "QUARKUS_DATASOURCE_URL"
+        name  = "QUARKUS_DATASOURCE_JDBC_URL"
         value = "jdbc:mysql://10.4.0.100:3306/ms_account_dev"
       }
 

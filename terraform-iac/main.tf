@@ -4,8 +4,8 @@ data "azurerm_subnet" "subnet_shr" {
     resource_group_name = "operator-lab-rg"
 }
 
-data "azurerm_subnet" "subnet_dev" {
-    name = "operator-net-dev-k8s-subnet"
+data "azurerm_subnet" "subnet_container_apps" {
+    name = "operator-net-dev-container-apps-subnet"
     virtual_network_name = "operator-net-dev-vnet"
     resource_group_name = "operator-lab-rg"
 }
@@ -59,7 +59,7 @@ resource "azurerm_container_app_environment" "app_env" {
     resource_group_name        = "operator-lab-rg"
     log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
 
-    infrastructure_subnet_id = data.azurerm_subnet.subnet_dev.id
+    infrastructure_subnet_id = data.azurerm_subnet.subnet_container_apps.id
 
-    internal_load_balancer_enabled = true
+    #internal_load_balancer_enabled = true
 }
