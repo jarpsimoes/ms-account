@@ -3,7 +3,7 @@ data "azurerm_container_app_environment" "app_env" {
   resource_group_name = "operator-lab-rg"
 }
 variable "tag" {
-  value = string
+  type = string
 }
 resource "azurerm_container_app" "container_app" {
   name                          = "container-app"
