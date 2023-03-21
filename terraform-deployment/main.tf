@@ -9,14 +9,11 @@ resource "azurerm_container_app" "container_app" {
   name                          = "container-app"
   container_app_environment_id  = data.azurerm_container_app_environment.app_env.id
   resource_group_name           = "operator-lab-rg"
-  revision_mode                 = "Multiple"
+  revision_mode                 = "Single"
 
   ingress {
     external_enabled = true
     target_port      = 8080
-    traffic_weight {
-      percentage = 100
-    }
   }
 
   template {
