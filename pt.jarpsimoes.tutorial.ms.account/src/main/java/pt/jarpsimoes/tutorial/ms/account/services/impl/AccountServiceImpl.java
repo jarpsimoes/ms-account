@@ -34,7 +34,9 @@ public class AccountServiceImpl implements AccountService {
         }
 
         Account accountEntity = convertToEntity(account);
+
         accountRepository.persist(accountEntity);
+
         accountRepository.flush();
 
         return convertToDTO(accountEntity);
@@ -52,6 +54,10 @@ public class AccountServiceImpl implements AccountService {
     }
     private AccountDetail convertToEntity(AccountDetailDTO dto) {
         AccountDetail detail = new AccountDetail();
+
+        if(dto == null) {
+            return detail;
+        }
         detail.setId(dto.getId());
         detail.setCountry(dto.getCountry());
         detail.setState(dto.getState());
