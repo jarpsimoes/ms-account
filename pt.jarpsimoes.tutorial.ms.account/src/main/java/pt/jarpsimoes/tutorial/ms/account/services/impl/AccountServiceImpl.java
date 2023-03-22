@@ -14,6 +14,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -42,6 +43,25 @@ public class AccountServiceImpl implements AccountService {
         return convertToDTO(accountEntity);
 
     }
+
+    @Override public List<AccountDTO> findAccountsByFirstName(final String firstName) {
+        List<Account> accounts = accountRepository.findByFirstName(firstName);
+        return convertToDTO(accounts);
+    }
+
+    @Override public List<AccountDTO> findAccountsByLastName(final String lastName) {
+        List<Account> accounts = accountRepository.findByLastName(lastName);
+        return convertToDTO(accounts);
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteAccount(Long id) {
+        return accountRepository.deleteAccountById(id);
+    }
+
+
+
     private Account convertToEntity(AccountDTO dto) {
         Account account = new Account();
         account.setId(dto.getId());
@@ -81,5 +101,12 @@ public class AccountServiceImpl implements AccountService {
         dto.setState(detail.getState());
         dto.setBirthDate(detail.getBirthDate());
         return dto;
+    }
+    private List<AccountDTO> convertToDTO(List<Account> accounts) {
+        List<AccountDTO> result = new ArrayList<>();
+
+        accounts.forEach(account -> result.add(convertToDTO(account)));
+
+        return result;
     }
 }

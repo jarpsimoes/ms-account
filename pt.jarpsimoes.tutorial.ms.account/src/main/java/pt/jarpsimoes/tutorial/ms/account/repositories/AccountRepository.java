@@ -19,4 +19,15 @@ public class AccountRepository implements PanacheRepository<Account> {
     public List<Account> findByUsernameOrEmail(String username, String email) {
         return list("username = ?1 or email = ?2", username, email);
     }
+    public List<Account> findByFirstName(String firstName) {
+        return list("firstName", firstName);
+    }
+
+    public List<Account> findByLastName(String lastName) {
+        return list("lastName", lastName);
+    }
+
+    public boolean deleteAccountById(Long id) {
+        return deleteById(id);
+    }
 }

@@ -8,10 +8,7 @@ import pt.jarpsimoes.tutorial.ms.account.exceptions.AccountAlreadyExistsExceptio
 import pt.jarpsimoes.tutorial.ms.account.services.AccountService;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
@@ -57,5 +54,40 @@ public class AccountResource {
             return Response.status(Response.Status.CONFLICT).build();
         }
 
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces("application/json")
+    public Response deleteAccount(@PathParam("id") Long id) {
+        logger.debug("Delete Account with id: {}", id);
+        if(accountService.deleteAccount(id)) {
+            return Response.status(Response.Status.OK).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("/find/first-name")
+    @Produces("application/json")
+    public Response findAccountsByFirstName(@QueryParam("name") String firstName) {
+        logger.debug("Find Accounts by first name: {}", firstName);
+        if(firstName == null || firstName.isEmpty()) {
+            logger.error("First name is null or empty");
+            return Response.status(Response.Status.PRECONDITION_REQUIRED).build();
+        }
+        return Response.status(Response.Status.OK).entity(accountService.findAccountsByFirstName(firstName)).build();
+    }
+
+    @GET
+    @Path("/find/last-name")
+    @Produces("application/json")
+    public Response findAccountsByLastName(@QueryParam("name") String lastName) {
+        logger.debug("Find Accounts by last name: {}", lastName);
+        if(lastName == null || lastName.isEmpty()) {
+            logger.error("Last name is null or empty");
+            return Response.status(Response.Status.PRECONDITION_REQUIRED).build();
+        }
+        return Response.status(Response.Status.OK).entity(accountService.findAccountsByLastName(lastName)).build();
     }
 }
