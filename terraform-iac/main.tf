@@ -59,7 +59,7 @@ resource "azurerm_container_app_environment" "app_env" {
     depends_on = [
         azurerm_log_analytics_workspace.log_workspace
     ]
-    name                       = "container-enviroment"
+    name                       = "container-enviroment-dev"
     location                   = "West Europe"
     resource_group_name        = "operator-lab-rg"
     log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id

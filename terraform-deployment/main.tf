@@ -6,7 +6,7 @@ variable "tag" {
   type = string
 }
 resource "azurerm_container_app" "container_app" {
-  name                          = "container-app"
+  name                          = "account-ms-dev"
   container_app_environment_id  = data.azurerm_container_app_environment.app_env.id
   resource_group_name           = "operator-lab-rg"
   revision_mode                 = "Single"
