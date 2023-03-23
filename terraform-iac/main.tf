@@ -9,6 +9,11 @@ data "azurerm_subnet" "subnet_container_apps" {
     virtual_network_name = "operator-net-dev-vnet"
     resource_group_name = "operator-lab-rg"
 }
+data "azurerm_subnet" "subnet_container_apps_prd" {
+    name = "operator-net-prd-container-apps-subnet"
+    virtual_network_name = "operator-net-prd-vnet"
+    resource_group_name = "operator-lab-rg"
+}
 
 module "vm" {
     source = "github.com/jarpsimoes/tf-modules/virtual-machine-linux"
@@ -61,5 +66,16 @@ resource "azurerm_container_app_environment" "app_env" {
 
     infrastructure_subnet_id = data.azurerm_subnet.subnet_container_apps.id
 
-    #internal_load_balancer_enabled = true
+}
+resource "azurerm_container_app_environment" "app_env_prd" {
+    depends_on = [
+        azurerm_log_analytics_workspace.log_workspace
+    ]
+    name                       = "container-enviroment"
+    location                   = "West Europe"
+    resource_group_name        = "operator-lab-rg"
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
+
+    infrastructure_subnet_id = data.azurerm_subnet.subnet_container_apps_prd.id
+
 }
