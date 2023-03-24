@@ -16,6 +16,9 @@ data "azurerm_subnet" "subnet_container_apps_prd" {
 }
 
 module "vm" {
+    depends_on = [
+        data.azurerm_subnet.subnet_shr
+    ]
     source = "github.com/jarpsimoes/tf-modules/virtual-machine-linux"
 
     name = "vm-db-dev"
@@ -57,7 +60,8 @@ resource "azurerm_log_analytics_workspace" "log_workspace" {
 
 resource "azurerm_container_app_environment" "app_env" {
     depends_on = [
-        azurerm_log_analytics_workspace.log_workspace
+        azurerm_log_analytics_workspace.log_workspace,
+        data.azurerm_subnet.subnet_container_apps
     ]
     name                       = "container-enviroment-dev"
     location                   = "West Europe"
@@ -69,7 +73,8 @@ resource "azurerm_container_app_environment" "app_env" {
 }
 resource "azurerm_container_app_environment" "app_env_prd" {
     depends_on = [
-        azurerm_log_analytics_workspace.log_workspace
+        azurerm_log_analytics_workspace.log_workspace,
+        data.azurerm_subnet.subnet_container_apps_prd
     ]
     name                       = "container-enviroment-prd"
     location                   = "West Europe"

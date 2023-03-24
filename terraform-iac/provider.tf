@@ -9,7 +9,7 @@ terraform {
     resource_group_name = "operator-lab-rg"
     storage_account_name = "operatorlabsa"
     container_name = "operator-lab-state-container"
-    key = "devdatabase.tfsate"
+    key = "dev_infra.tfsate"
   }
 }
 
