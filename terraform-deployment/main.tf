@@ -59,12 +59,12 @@ resource "azurerm_container_app" "container_app_dev" {
 
       env {
           name  = "QUARKUS_DATASOURCE_USERNAME"
-          value = "ms_account"
+          value = "ms_account_dev"
       }
 
       env {
           name  = "QUARKUS_DATASOURCE_PASSWORD"
-          value = "ms_account"
+          value = "ms_account_dev"
       }
 
       env {
