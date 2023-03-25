@@ -1,9 +1,9 @@
 data "azurerm_container_app_environment" "app_env_dev" {
-  name                = "container-enviroment-dev"
+  name                = "container-environment-dev"
   resource_group_name = "operator-lab-rg"
 }
 data "azurerm_container_app_environment" "app_env_prd" {
-  name                = "container-enviroment-prd"
+  name                = "container-environment-prd"
   resource_group_name = "operator-lab-rg"
 }
 variable "tag" {

@@ -63,7 +63,7 @@ resource "azurerm_container_app_environment" "app_env" {
         azurerm_log_analytics_workspace.log_workspace,
         data.azurerm_subnet.subnet_container_apps
     ]
-    name                       = "container-enviroment-dev"
+    name                       = "container-environment-dev"
     location                   = "West Europe"
     resource_group_name        = "operator-lab-rg"
     log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
@@ -76,7 +76,7 @@ resource "azurerm_container_app_environment" "app_env_prd" {
         azurerm_log_analytics_workspace.log_workspace,
         data.azurerm_subnet.subnet_container_apps_prd
     ]
-    name                       = "container-enviroment-prd"
+    name                       = "container-environment-prd"
     location                   = "West Europe"
     resource_group_name        = "operator-lab-rg"
     log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
