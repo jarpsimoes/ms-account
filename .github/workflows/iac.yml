@@ -31,7 +31,7 @@ jobs:
      
   Deployment:
     runs-on: self-hosted
-    needs: Configuration
+    needs: Infrastructure
     steps:
       - uses: actions/checkout@v3
       - name: Run Docker Build
