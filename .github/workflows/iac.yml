@@ -29,24 +29,6 @@ jobs:
           echo $SSH_SHARED_PUB > key.pub
           terraform apply -auto-approve
      
-  Configuration:
-    runs-on: self-hosted
-    needs: Infrastructure
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run MySQL Install
-        working-directory: ./ansible-casc
-        env:
-          MYSQL_CONFIGS: ${{ secrets.MYSQL_CONFIGS }}
-          SSH_SHARED_PRV: ${{ secrets.SSH_SHARED_PRV }}
-          ANSIBLE_HOST_KEY_CHECKING: False
-        run: |
-          echo $SSH_SHARED_PRV | base64 -d > key
-          chmod 0600 key
-          echo $MYSQL_CONFIGS | base64 -d > mysql-configs.yaml
-          /home/admin_vm/.local/bin/ansible-galaxy install geerlingguy.mysql
-          /home/admin_vm/.local/bin/ansible-playbook -i hosts.ini mysql.yaml
-
   Deployment:
     runs-on: self-hosted
     needs: Configuration
@@ -56,7 +38,13 @@ jobs:
         working-directory: ./terraform-deployment
         env:
           DOCKER_REGISTRY_GITHUB_TOKEN: ${{ secrets.DOCKER_REGISTRY_GITHUB_TOKEN }}
+          SQL_USER: ${{ secrets.SQL_USER }}
+          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+          SQL_URL: ${{ secrets.SQL_URL }}
         run: |
           terraform init
           TAG=dev_$(git rev-parse --short "$GITHUB_SHA")
-          terraform apply -var="tag=$TAG" -auto-approve
+          terraform apply -var="tag=$TAG" \
+                          -var="sql_user=$SQL_USER" \
+                          -var="sql_password=$SQL_PASSWORD" \
+                          -var="sql_url=$SQL_URL" -auto-approve

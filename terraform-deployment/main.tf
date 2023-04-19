@@ -9,6 +9,15 @@ data "azurerm_container_app_environment" "app_env_prd" {
 variable "tag" {
   type = string
 }
+variable "sql_user" {
+  type = string
+}
+variable "sql_password" {
+  type = string
+}
+variable "sql_url" {
+  type = string
+}
 resource "azurerm_container_app" "container_app_dev" {
   depends_on = [
     data.azurerm_container_app_environment.app_env_dev
@@ -55,22 +64,22 @@ resource "azurerm_container_app" "container_app_dev" {
 
       env {
         name  = "QUARKUS_DATASOURCE_JDBC_URL"
-        value = "jdbc:mysql://10.4.0.100:3306/ms_account_dev"
+        value = var.sql_url
       }
 
       env {
           name  = "QUARKUS_DATASOURCE_USERNAME"
-          value = "ms_account_dev"
+          value = var.sql_user
       }
 
       env {
           name  = "QUARKUS_DATASOURCE_PASSWORD"
-          value = "ms_account_dev"
+          value = var.sql_password
       }
 
       env {
           name  = "QUARKUS_DATASOURCE_DB_KIND"
-          value = "mysql"
+          value = "mssql"
       }
 
       env {

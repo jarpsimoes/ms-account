@@ -15,6 +15,7 @@ data "azurerm_subnet" "subnet_container_apps_prd" {
     resource_group_name = "operator-lab-rg"
 }
 
+/*
 module "vm" {
     depends_on = [
         data.azurerm_subnet.subnet_shr
@@ -47,9 +48,43 @@ module "vm" {
         admin_username = "admin_db"
         pub_key_path = "./key.pub"
     }
+}*/
+
+resource "azurerm_mssql_server" "sqlserver" {
+    name                        = "serverless-instance-jasimoes"
+    resource_group_name         = "operator-lab-rg"
+    location                    = "West Europe"
+    version                     = "12.0"
+
+    administrator_login         = "admin_db"
+    administrator_login_password = "P@ssw0rd"
 }
+resource "azurerm_mssql_database" "serverless_db" {
+    depends_on = [
+        azurerm_mssql_server.sqlserver
+    ]
+    name                        = "account_db"
+    server_id                   = azurerm_mssql_server.sqlserver.id
+    collation                   = "SQL_Latin1_General_CP1_CI_AS"
 
+    auto_pause_delay_in_minutes = 60
+    max_size_gb                 = 2
+    min_capacity                = 0.5
+    read_replica_count          = 0
+    read_scale                  = false
+    sku_name                    = "GP_S_Gen5_2"
+    zone_redundant              = false
 
+}
+resource "azurerm_mssql_virtual_network_rule" "network_rule" {
+    depends_on = [
+        azurerm_mssql_server.sqlserver
+    ]
+    name      = "sql-vnet-rule"
+    server_id = azurerm_mssql_server.sqlserver.id
+    subnet_id = data.azurerm_subnet.subnet_container_apps.id
+    ignore_missing_vnet_service_endpoint = true
+}
 resource "azurerm_log_analytics_workspace" "log_workspace" {
     name                = "container-apps-log-workspace"
     resource_group_name = "operator-lab-rg"
