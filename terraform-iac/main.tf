@@ -83,7 +83,7 @@ resource "azurerm_mssql_virtual_network_rule" "network_rule" {
     name      = "sql-vnet-rule"
     server_id = azurerm_mssql_server.sqlserver.id
     subnet_id = data.azurerm_subnet.subnet_container_apps.id
-    ignore_missing_vnet_service_endpoint = true
+    ignore_missing_vnet_service_endpoint = false
 }
 resource "azurerm_log_analytics_workspace" "log_workspace" {
     name                = "container-apps-log-workspace"
